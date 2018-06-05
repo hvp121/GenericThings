@@ -2,7 +2,7 @@
 Project intends to make generics, easy to use android component. Do contribute to make more generic component
 
 ----------------------------------------------
-1. Generic Adapter
+1. Generic Adapter : 
 Its an easy to use generic adapter with dataBinding setup
 
 Usage 
