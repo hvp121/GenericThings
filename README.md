@@ -18,4 +18,4 @@ mDataBinding.recyclerview.setAdapter(new GenericAdapter<String, ListitemGenericA
                 return R.layout.listitem_generic_adapter;
             }
         });
-----------------------------------------------```        
+```
