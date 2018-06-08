@@ -47,6 +47,20 @@ public class SampleActivity extends BaseActivity {
                 return R.layout.listitem_generic_adapter;
             }
         });
+
+//        mDataBinding.recyclerview.setAdapter(new GenericAdapter<Model,ListitemGenericAdapterBinding>(this, new ArrayList<Model>()) {
+//
+//            @Override
+//            public void onBindData(RecyclerView.ViewHolder holder, Model model, int position, ListitemGenericAdapterBinding dataBinding) {
+//                    model.getName();
+//                    dataBinding.txtName.setText();
+//            }
+//
+//            @Override
+//            public int getLayoutResId() {
+//                return 0;
+//            }
+//        });
     }
 
     private ArrayList<Model> getModelList() {
