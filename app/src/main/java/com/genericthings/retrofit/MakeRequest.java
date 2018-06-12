@@ -4,8 +4,11 @@ import android.util.Log;
 
 import com.genericthings.BuildConfig;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -25,12 +28,15 @@ public class MakeRequest {
         return mInstance;
     }
 
+
     /**
-     * @param call
-     * @param responseModel
-     * @param listener
+     * Returns object as response, later cast it based on passed response model
+     *
+     * @param call              call
+     * @param responseModel     expected response model
+     * @param listener          result callback
      */
-    public void request(Call call, final Class responseModel, final ResponseListener listener) {
+    public void request(Call call, final Class<?> responseModel, final ResponseListener listener) {
 
         printLog("--Request-- " + call.request().url().toString());
         listener.showHideProgress(true);
@@ -39,7 +45,6 @@ public class MakeRequest {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response.body().string());
-                    printLog("--Response-- " + jsonObject.toString());
                     Object model = new Gson().fromJson(jsonObject.toString(), responseModel);
                     listener.showHideProgress(false);
                     listener.onResponse(model);
@@ -50,12 +55,44 @@ public class MakeRequest {
 
             @Override
             public void onFailure(Call<okhttp3.ResponseBody> call, Throwable t) {
+                listener.showHideProgress(false);
                 listener.onError("something went wrong");
             }
         });
     }
 
-    private void printLog(String log) {
+
+    /**
+     * Returns String as response, later cast it to String
+     *
+     * @param call          call
+     * @param listener      result callback
+     */
+    public void request(Call call, final ResponseListener listener) {
+
+        printLog("--Request-- " + call.request().url().toString());
+        listener.showHideProgress(true);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    listener.showHideProgress(false);
+                    listener.onResponse(new JSONObject(response.body().string()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<okhttp3.ResponseBody> call, Throwable t) {
+                listener.showHideProgress(false);
+                listener.onError("something went wrong");
+            }
+        });
+    }
+
+
+    public static void printLog(String log) {
         if (BuildConfig.DEBUG)
             Log.e("----", log);
     }
