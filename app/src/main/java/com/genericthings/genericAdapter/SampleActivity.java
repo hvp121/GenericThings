@@ -1,3 +1,12 @@
+/*------------------------------------------------------------------------------
+ - com.genericthings.genericAdapter.SampleActivity
+ -
+ - Created by manoj.bhadane
+ - Copyright (c) 2018. All rights reserved.
+ -
+ - Last modified 13/6/18 5:13 PM
+ -----------------------------------------------------------------------------*/
+
 package com.genericthings.genericAdapter;
 
 import android.databinding.ViewDataBinding;
