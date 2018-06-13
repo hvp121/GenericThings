@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -14,9 +15,12 @@ public abstract class GenericAdapter<T, D> extends RecyclerView.Adapter<Recycler
     private Context mContext;
     private ArrayList<T> mArrayList;
 
-    public abstract void onBindData(RecyclerView.ViewHolder holder, T model, int position, D dataBinding);
-
     public abstract int getLayoutResId();
+
+//    public abstract void onBindData(RecyclerView.ViewHolder holder, T model, int position, D dataBinding);
+    public abstract void onBindData(T model, int position, D dataBinding);
+
+    public abstract void onItemClick(T model, int position);
 
 
     public GenericAdapter(Context context, ArrayList<T> arrayList) {
@@ -27,14 +31,20 @@ public abstract class GenericAdapter<T, D> extends RecyclerView.Adapter<Recycler
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewDataBinding dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), getLayoutResId(), parent, false);
-//        RecyclerView.ViewHolder holder = setViewHolder(parent, viewType, (D) dataBinding);
         RecyclerView.ViewHolder holder = new ItemViewHolder(dataBinding);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        onBindData(holder, mArrayList.get(position), position, ((ItemViewHolder) holder).mDataBinding);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        onBindData(mArrayList.get(position), position, ((ItemViewHolder) holder).mDataBinding);
+
+        ((ViewDataBinding) ((ItemViewHolder) holder).mDataBinding).getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClick(mArrayList.get(position), position);
+            }
+        });
     }
 
     @Override

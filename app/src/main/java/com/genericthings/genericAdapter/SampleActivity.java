@@ -3,6 +3,7 @@ package com.genericthings.genericAdapter;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.genericthings.R;
 import com.genericthings.base.BaseActivity;
@@ -36,31 +37,22 @@ public class SampleActivity extends BaseActivity {
         /**
          * Sample usage Two
          */
-        mDataBinding.recyclerview.setAdapter(new GenericAdapter<String, ListitemGenericAdapterBinding>(this,getStringsList()) {
-            @Override
-            public void onBindData(RecyclerView.ViewHolder holder, String model, int position, ListitemGenericAdapterBinding dataBinding) {
-                dataBinding.txtName.setText("String " + position);
-            }
-
+        mDataBinding.recyclerview.setAdapter(new GenericAdapter<String, ListitemGenericAdapterBinding>(this, getStringsList()) {
             @Override
             public int getLayoutResId() {
                 return R.layout.listitem_generic_adapter;
             }
-        });
 
-//        mDataBinding.recyclerview.setAdapter(new GenericAdapter<Model,ListitemGenericAdapterBinding>(this, new ArrayList<Model>()) {
-//
-//            @Override
-//            public void onBindData(RecyclerView.ViewHolder holder, Model model, int position, ListitemGenericAdapterBinding dataBinding) {
-//                    model.getName();
-//                    dataBinding.txtName.setText();
-//            }
-//
-//            @Override
-//            public int getLayoutResId() {
-//                return 0;
-//            }
-//        });
+            @Override
+            public void onBindData(String model, int position, ListitemGenericAdapterBinding dataBinding) {
+                dataBinding.txtName.setText("String " + position);
+            }
+
+            @Override
+            public void onItemClick(String model, int position) {
+                Toast.makeText(SampleActivity.this, "" + model.toString() + " - " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private ArrayList<Model> getModelList() {

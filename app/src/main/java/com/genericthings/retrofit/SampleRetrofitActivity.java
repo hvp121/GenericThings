@@ -1,5 +1,6 @@
 package com.genericthings.retrofit;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.databinding.ViewDataBinding;
 import android.util.Log;
 import android.view.View;
